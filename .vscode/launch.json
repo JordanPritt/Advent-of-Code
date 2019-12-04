@@ -1,0 +1,52 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Day1",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/2019/Day1/bin/Debug/netcoreapp3.0/Day1.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/2019/Day1",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "Debug Day2",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/2019/Day2/bin/Debug/netcoreapp3.0/day2.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/2019/Day2",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Debug Day3",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/2019/Day3/bin/Debug/netcoreapp3.0/day3.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/2019/Day3",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Debug Day4",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/2019/Day4/bin/Debug/netcoreapp3.0/day4.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/2019/Day4",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        }
+    ]
+}
