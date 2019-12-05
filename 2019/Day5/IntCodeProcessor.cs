@@ -8,97 +8,63 @@ namespace Day5
     public class IntCodeProcessor
     {
         public string InputFile { get; set; }
-        public List<int> Codes { get; private set; }
-
 
         public IntCodeProcessor(string inputFile = "")
         {
             InputFile = inputFile;
-            Codes = InitializeCodes(inputFile) ?? new List<int>();
         }
-        /// <summary>
-        /// Processes the int code application.
-        /// </summary>
+
         public List<int> ProcessCodes(List<int> codeList = null)
         {
             List<int> newList = codeList ?? InitializeCodes(InputFile);
-            CodeAction currAct;
 
-            for (int i = 0; i < newList.Count; i += 4)
+            for (int i = 0; i < newList.Count; i++)
             {
-                int opcode = newList[i];
+                List<int> code = new List<int>();
 
-                currAct = opcode switch
-                {
-                    1 => CodeAction.Add,
-                    2 => CodeAction.Multiply,
-                    99 => CodeAction.Exit,
-                    _ => throw new Exception("You done screwed up...")
-                };
+                if (newList[i].ToString().Length == 4)
+                    code.AddRange(newList.GetRange(i + 1, 3));
 
-                if (currAct == CodeAction.Exit)
-                    break;
+                // IntCode ic = new IntCode(newList[i]);
 
-                int param1 = newList[newList[i + 1]];
-                int param2 = newList[newList[i + 2]];
-                int position = newList[i + 3];
-                int result = 0;
+                // if (ic.Action == CodeAction.Exit)
+                //     break;
 
-                if (currAct == CodeAction.Add)
-                    result = param1 + param2;
-                else if (currAct == CodeAction.Multiply)
-                    result = param1 * param2;
+                // if (ic.Action == CodeAction.Input)
+                // {
+                //     newList[newList[i + 1]] = ic.Opcode;
+                //     ++i;
+                //     continue;
+                // }
+                // else if (ic.Action == CodeAction.Output)
+                // {
+                //     Console.WriteLine($"program output: {newList[i + 1]}");
+                //     ++i;
+                //     continue;
+                // }
 
-                newList[position] = result;
+                // int param1 = ic.Modes[0] == 0 ? newList[newList[ic.Modes[0]]] : ic.Modes[0];
+                // int param2 = ic.Modes[1] == 0 ? newList[newList[ic.Modes[1]]] : ic.Modes[1];
+                // int position = ic.Modes[2] == 0 ? newList[ic.Modes[2]] : ic.Modes[2];
+                // int result = 0;
+
+                // if (ic.Action == CodeAction.Add)
+                //     result = param1 + param2;
+                // else if (ic.Action == CodeAction.Multiply)
+                //     result = param1 * param2;
+
+                // newList[position] = result;
+                // i = i + 2;
+
             }
 
             return newList;
         }
 
-        public List<int> GetNounAndVerb()
-        {
-            List<int> newList = new List<int>();
-
-            for (int noun = 0; noun <= 99; noun++)
-            {
-                for (int verb = 0; verb <= 99; verb++)
-                {
-                    newList = InitializeCodes(InputFile);
-                    newList[1] = noun;
-                    newList[2] = verb;
-
-                    newList = ProcessCodes(newList);
-
-                    if (newList[0] == 19690720)
-                    {
-                        Console.WriteLine($"\nnoun: {noun} verb: {verb}\n\nresult: {100 * noun + verb}");
-                        return newList;
-                    }
-                }
-            }
-
-            return newList;
-        }
-
-        /// <summary>
-        /// Initializes the list of int codes.
-        /// </summary>
-        /// <param name="filePath">String of the input file to get codes from.</param>
-        /// <returns>A List<int> of int codes tp process.</returns>
         private List<int> InitializeCodes(string filePath)
         {
             List<int> codes = File.ReadAllText(filePath).Split(',').ToList().ConvertAll(int.Parse);
             return codes;
-        }
-
-        /// <summary>
-        /// An enum of the possible actions to take for a given int code.
-        /// </summary>
-        private enum CodeAction
-        {
-            Add,
-            Multiply,
-            Exit
         }
     }
 }

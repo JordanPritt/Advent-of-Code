@@ -6,33 +6,37 @@ namespace Day5
 {
     public class IntCode
     {
-        public string Code { get; set; }
-        //public int Input { get; set; }
+        public CodeAction Action { get; private set; }
+        public List<int> Modes { get; private set; }
         public int Opcode { get; private set; }
-        public string Action { get; private set; }
 
-        public IntCode(string code)
+        public IntCode(int code)
         {
-            Code = code;
-            Opcode = SetOpcode(code);
-            Action = SetAction(int.Parse(code));
-        }
-
-        private int SetOpcode(string code)
-        {
-            return Convert.ToInt32(code[0].ToString());
-        }
-        private string SetAction(int input)
-        {
-            return input switch
+            string codeString = code.ToString();
+            Opcode = Convert.ToInt32(codeString.Last().ToString());
+            Action = Opcode switch
             {
-                1 => "ADD",
-                2 => "MULTIPLY",
-                // 3 => "",
-                // 4 => "",
-                99 => "EXIT",
-                _ => throw new Exception("You done screwed up...")
+                1 => CodeAction.Add,
+                2 => CodeAction.Multiply,
+                3 => CodeAction.Input,
+                4 => CodeAction.Output,
+                99 => CodeAction.Exit,
+                _ => throw new Exception("You done screwed up the CodeAction...")
             };
+
+            List<int> modes = new List<int>();
+            string m = codeString.Remove(codeString.Length - 2);
+
+            for (int i = 0; i < 3; i++)
+            {
+                if (m.Length > i)
+                    modes.Add(Convert.ToInt32(m[i].ToString()));
+                else
+                    modes.Add(0);
+            }
+
+            modes.Reverse();
+            Modes = modes;
         }
     }
 }

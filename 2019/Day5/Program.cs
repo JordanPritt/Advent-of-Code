@@ -11,10 +11,7 @@ namespace Day5
                 string filePath = "./input-test.csv";
                 IntCodeProcessor icp = new IntCodeProcessor(filePath);
 
-                //var result = icp.ProcessCodes();
-                var result2 = icp.GetNounAndVerb();
-
-                Console.WriteLine($"\nResult: {result2[0]}");
+                var result = icp.ProcessCodes();
                 Console.WriteLine("\nApplication ended...");
             }
             catch (Exception ex)
