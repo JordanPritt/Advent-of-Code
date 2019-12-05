@@ -47,6 +47,17 @@
             "cwd": "${workspaceFolder}/2019/Day4",
             "console": "internalConsole",
             "stopAtEntry": false
+        },
+        {
+            "name": "Debug Day5",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/2019/Day5/bin/Debug/netcoreapp3.0/day5.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/2019/Day5",
+            "console": "internalConsole",
+            "stopAtEntry": false
         }
     ]
 }
