@@ -17,45 +17,37 @@ namespace Day5
         public List<int> ProcessCodes(List<int> codeList = null)
         {
             List<int> newList = codeList ?? InitializeCodes(InputFile);
+            int index = 0;
 
-            for (int i = 0; i < newList.Count; i++)
+            for (int i = 0; i < newList.Count; i += 2)
             {
-                List<int> code = new List<int>();
+                int opcode = 0;
+                int opcodeMode = 0;
+                int param1 = 0;
+                int param1Mode;
+                int param2 = 0;
+                int param2Mode = 0;
+                int position = 0;
+                int code = newList[i];
+                int codeSize = code.ToString().Length;
 
-                if (newList[i].ToString().Length == 4)
-                    code.AddRange(newList.GetRange(i + 1, 3));
+                if (code == 99)
+                    break;
 
-                // IntCode ic = new IntCode(newList[i]);
-
-                // if (ic.Action == CodeAction.Exit)
-                //     break;
-
-                // if (ic.Action == CodeAction.Input)
-                // {
-                //     newList[newList[i + 1]] = ic.Opcode;
-                //     ++i;
-                //     continue;
-                // }
-                // else if (ic.Action == CodeAction.Output)
-                // {
-                //     Console.WriteLine($"program output: {newList[i + 1]}");
-                //     ++i;
-                //     continue;
-                // }
-
-                // int param1 = ic.Modes[0] == 0 ? newList[newList[ic.Modes[0]]] : ic.Modes[0];
-                // int param2 = ic.Modes[1] == 0 ? newList[newList[ic.Modes[1]]] : ic.Modes[1];
-                // int position = ic.Modes[2] == 0 ? newList[ic.Modes[2]] : ic.Modes[2];
-                // int result = 0;
-
-                // if (ic.Action == CodeAction.Add)
-                //     result = param1 + param2;
-                // else if (ic.Action == CodeAction.Multiply)
-                //     result = param1 * param2;
-
-                // newList[position] = result;
-                // i = i + 2;
-
+                if (codeSize == 4)
+                {
+                    opcode = Convert.ToInt32(code.ToString().Last().ToString());
+                    opcodeMode = Convert.ToInt32(code.ToString()[codeSize - 2].ToString());
+                    param1 = Convert.ToInt32(newList[index + 1].ToString());
+                    param2 = Convert.ToInt32(newList[index + 2].ToString());
+                    param1Mode = param1 = Convert.ToInt32(code.ToString()[codeSize - 3].ToString());
+                    param2Mode = param1 = Convert.ToInt32(code.ToString()[codeSize - 4].ToString());
+                }
+                else
+                {
+                    opcode = code;
+                    param1 = newList[index + 1];
+                }
             }
 
             return newList;

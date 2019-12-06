@@ -9,6 +9,7 @@ namespace Day5
         public CodeAction Action { get; private set; }
         public List<int> Modes { get; private set; }
         public int Opcode { get; private set; }
+        public List<int> Params { get; set; }
 
         public IntCode(int code)
         {
