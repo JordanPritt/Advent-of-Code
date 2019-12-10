@@ -9,12 +9,13 @@ namespace Day7
             try
             {
 
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.WriteLine("Processing signals...");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("Processing signals...\n");
                 IntcodeProcessor ip = new IntcodeProcessor();
-                int result = ip.FindThrusterSignal();
+                int result = ip.FindLargestSignal();
 
-                Console.Write("Computed signal:");
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.Write("\nComputed signal:");
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.Write($" {result}");
                 Console.ForegroundColor = ConsoleColor.White;

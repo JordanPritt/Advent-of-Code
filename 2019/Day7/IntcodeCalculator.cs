@@ -9,24 +9,50 @@ namespace Day7
     {
         public IntcodeProcessor() { }
 
-        public int FindThrusterSignal()
+        public int FindLargestSignal()
         {
-            List<int> phaseSequence = new List<int>() { 4, 3, 2, 1, 0 };
+            List<int> results = new List<int>();
+
+            var signals = Enumerable.Range(0, 44444)
+                      .Select(x => x.ToString("00000"))
+                      .Where(x => x.Contains("0"))
+                      .Where(x => x.Contains("1"))
+                      .Where(x => x.Contains("2"))
+                      .Where(x => x.Contains("3"))
+                      .Where(x => x.Contains("4"));
+
+            foreach (string signal in signals)
+            {
+                List<int> signalAsList = new List<int>();
+                foreach (char c in signal)
+                {
+                    int i = Convert.ToInt32(c.ToString());
+                    signalAsList.Add(i);
+                }
+
+                results.Add(FindThrusterSignal(signalAsList));
+            }
+
+            return results.Max();
+        }
+
+
+        private int FindThrusterSignal(List<int> phaseSequence)
+        {
             int outputSignal = 0;
 
-            ProcessCodes(4, 0);
-            // foreach (int p in phaseSequence)
-            // {
-            //     Console.WriteLine($"Phase number: {p}");
-            //     ProcessCodes(p, outputSignal);
-            // }
+            foreach (int p in phaseSequence)
+            {
+                outputSignal = ProcessCodes(p, outputSignal);
+            }
 
             return outputSignal;
         }
 
         public int ProcessCodes(int phase, int signal)
         {
-            List<int> codesList = File.ReadAllText("./input-test.csv").Split(',').ToList().ConvertAll(int.Parse);
+            List<int> codesList = File.ReadAllText("./input.csv").Split(',').ToList().ConvertAll(int.Parse);
+            int value1 = 0, value2 = 0;
             int signalOutput = signal;
             int input = phase;
 
@@ -37,32 +63,15 @@ namespace Day7
                 int value1Mode = (op % 1000) / 100;
                 int value2Mode = (op % 10000) / 1000;
                 int param3Mode = op / 10000;
-                // int value1 = 0;
-                // int value2 = 0;
 
                 if (opcode == 99)
                     return signalOutput;
 
-                // if (codesList.Count > i + 1)
-                //     value1 = value1Mode == 1 ? codesList[i + 1] : codesList[codesList[i + 1]];
-
-                // if (opcode < 3 && codesList.Count > i + 2)
-                //     value2 = value2Mode == 1 ? codesList[i + 2] : codesList[codesList[i + 2]];
-
-                // if (opcode != (int)CodeAction.Exit && codesList.Count > i + 1)
-                //     value1 = value1Mode == 1 ? codesList[i + 1] : codesList[codesList[i + 1]];
-
-                // if (opcode != (int)CodeAction.Exit
-                //     && opcode != (int)CodeAction.Input
-                //     && opcode != (int)CodeAction.Output
-                //     && codesList.Count > i + 2)
-                //     value2 = value2Mode == 1 ? codesList[i + 2] : codesList[codesList[i + 2]];
-
                 switch (opcode)
                 {
                     case (int)CodeAction.Add:
-                        int value1 = value1Mode == 1 ? codesList[i + 1] : codesList[codesList[i + 1]];
-                        int value2 = value2Mode == 1 ? codesList[i + 2] : codesList[codesList[i + 2]];
+                        value1 = value1Mode == 1 ? codesList[i + 1] : codesList[codesList[i + 1]];
+                        value2 = value2Mode == 1 ? codesList[i + 2] : codesList[codesList[i + 2]];
 
                         if (param3Mode != 1)
                             codesList[codesList[i + 3]] = value1 + value2;
@@ -72,8 +81,8 @@ namespace Day7
                         break;
 
                     case (int)CodeAction.Multiply:
-                        int value1 = value1Mode == 1 ? codesList[i + 1] : codesList[codesList[i + 1]];
-                        int value2 = value2Mode == 1 ? codesList[i + 2] : codesList[codesList[i + 2]];
+                        value1 = value1Mode == 1 ? codesList[i + 1] : codesList[codesList[i + 1]];
+                        value2 = value2Mode == 1 ? codesList[i + 2] : codesList[codesList[i + 2]];
 
                         if (param3Mode != 1)
                             codesList[codesList[i + 3]] = value1 * value2;
@@ -87,13 +96,17 @@ namespace Day7
                             codesList[i + 1] = input;
                         else
                             codesList[codesList[i + 1]] = input;
-                        input = 0;
+                        input = signal;
                         i += 2;
                         break;
 
                     case (int)CodeAction.Output:
-                        int value = value1Mode == 1 ? codesList[i + 1] : codesList[codesList[i + 1]];
-                        Console.WriteLine($"system: {value}");
+                        value1 = value1Mode == 1 ? codesList[i + 1] : codesList[codesList[i + 1]];
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.Write("system output:");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.Write($" {value1}\n");
+                        Console.ForegroundColor = ConsoleColor.White;
                         signalOutput = value1;
                         i += 2;
                         break;
@@ -141,9 +154,9 @@ namespace Day7
                         break;
 
                     case (int)CodeAction.Exit:
-                        return -1;
+                        return signalOutput;
                     default:
-                        return -1;
+                        return signalOutput;
                 }
             }
             return signalOutput;
@@ -160,11 +173,5 @@ namespace Day7
         LessThan = 7,
         Equals = 8,
         Exit = 99
-    }
-    public enum CodeMode
-    {
-        Position,
-        Immediate,
-        NotSet
     }
 }
