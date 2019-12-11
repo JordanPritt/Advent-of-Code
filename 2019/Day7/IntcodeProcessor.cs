@@ -7,7 +7,8 @@ namespace Day7
 {
     public class IntcodeProcessor
     {
-        private List<int> codesList = File.ReadAllText("./input-test.csv").Split(',').ToList().ConvertAll(int.Parse);
+        private List<int> codesList = new List<int>();
+        private bool initialRun = true;
         private int position = 0;
 
         public int Phase { get; set; }
@@ -17,21 +18,28 @@ namespace Day7
         public IntcodeProcessor(int phase, int signal = 0)
         {
             Phase = phase;
-            Signal = signal == 0 ? phase : signal;
+            Signal = signal;
+            codesList = File.ReadAllText("./input.csv").Split(',').ToList().ConvertAll(int.Parse);
         }
 
         public (int signal, int halt) RunProcess(int signal)
         {
-            signal = signal == 0 ? Phase : signal;
-            Signal = ProcessCode(Phase, signal);
+            if (initialRun == true)
+            {
+                initialRun = false;
+                Signal = ProcessCode(Phase, Phase);
+            }
+            else
+                Signal = ProcessCode(Phase, Signal);
+
             return (Signal, HaltCode);
         }
 
-        private int ProcessCode(int phase, int signal)
+        public int ProcessCode(int phase, int signal)
         {
             int value1 = 0, value2 = 0;
             int signalOutput = signal;
-            int input = phase;
+            int input = signal == 0 ? phase : signal;
 
             while (HaltCode != 99)
             {
@@ -88,9 +96,9 @@ namespace Day7
                         Console.Write($" {value1}\n");
                         Console.ForegroundColor = ConsoleColor.White;
                         signalOutput = value1;
-                        position += 2; // store position to resume at
                         HaltCode = opcode;
-                        return value1; // return current signal value
+                        position += 2;
+                        break;
 
                     case 5: // jump if true
                         value1 = value1Mode == 1 ? codesList[position + 1] : codesList[codesList[position + 1]];
@@ -138,8 +146,11 @@ namespace Day7
                         HaltCode = opcode;
                         return signalOutput;
                     default:
-                        return signalOutput;
+                        break;
                 }
+
+                if (opcode == 4)
+                    return signalOutput;
             }
             return signalOutput;
         }

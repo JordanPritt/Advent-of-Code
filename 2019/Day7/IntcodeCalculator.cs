@@ -21,9 +21,9 @@ namespace Day7
                       .Where(x => x.Contains("3"))
                       .Where(x => x.Contains("4"));
 
-            List<string> test = new List<string>() { "98765" }; // test input
+            signals = new List<string>() { "98765" }; // test input
 
-            foreach (string signal in test) // run against all permutations
+            foreach (string signal in signals) // run against all permutations
             {
                 List<int> phaseList = new List<int>(signal.ToCharArray().ToList().Select(c => int.Parse(c.ToString())));
                 int lastSignal = 0;
@@ -47,6 +47,8 @@ namespace Day7
                         amps.Enqueue(current);
                 }
             }
+            Console.WriteLine($"\nsignal count:   {results.Count}");
+            Console.WriteLine($"Ran each phase: {results.Count / 5}");
             return results.Max();
         }
     }
