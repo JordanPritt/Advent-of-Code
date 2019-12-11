@@ -11,7 +11,7 @@ namespace Day7
 
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine("Processing signals...\n");
-                IntcodeProcessor ip = new IntcodeProcessor();
+                IntcodeCalculator ip = new IntcodeCalculator();
                 int result = ip.FindLargestSignal();
 
                 Console.ForegroundColor = ConsoleColor.DarkCyan;

@@ -5,16 +5,15 @@ using System.Collections.Generic;
 
 namespace Day7
 {
-    public class IntcodeProcessor
+    public class IntcodeCalculator
     {
-        public IntcodeProcessor() { }
+        public IntcodeCalculator() { }
 
         public int FindLargestSignal()
         {
+            Queue<IntcodeProcessor> amps = new Queue<IntcodeProcessor>();
             List<int> results = new List<int>();
-
-            // var signals = Enumerable.Range(0, 44444)
-            var signals = Enumerable.Range(55555, 99999)
+            IEnumerable<string> signals = Enumerable.Range(55555, 99999)
                       .Select(x => x.ToString("00000"))
                       .Where(x => x.Contains("0"))
                       .Where(x => x.Contains("1"))
@@ -22,29 +21,33 @@ namespace Day7
                       .Where(x => x.Contains("3"))
                       .Where(x => x.Contains("4"));
 
-            List<string> test = new List<string>() { "98765" };
+            List<string> test = new List<string>() { "98765" }; // test input
 
-            foreach (string signal in test)
+            foreach (string signal in test) // run against all permutations
             {
-                List<int> signalAsList = new List<int>();
-                foreach (char c in signal)
+                List<int> phaseList = new List<int>(signal.ToCharArray().ToList().Select(c => int.Parse(c.ToString())));
+                int lastSignal = 0;
+
+                foreach (int phase in phaseList)
                 {
-                    int i = Convert.ToInt32(c.ToString());
-                    signalAsList.Add(i);
+                    amps.Enqueue(new IntcodeProcessor(phase));
                 }
 
-                results.Add(FindThrusterSignal(signalAsList));
+                while (amps.Count > 0)
+                {
+                    var current = amps.Dequeue();
+                    var res = current.RunProcess(lastSignal);
+
+                    lastSignal = res.signal;
+                    results.Add(res.signal);
+
+                    if (res.halt == 99)
+                        continue;
+                    else
+                        amps.Enqueue(current);
+                }
             }
-
             return results.Max();
-        }
-
-        private int FindThrusterSignal(List<int> phaseSequence)
-        {
-            int outputSignal = 0;
-            phaseSequence.ForEach(i => outputSignal = new IntcodeCompute(i, outputSignal).Compute());
-
-            return outputSignal;
         }
     }
 }
