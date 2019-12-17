@@ -69,6 +69,28 @@
             "cwd": "${workspaceFolder}/2019/Day6",
             "console": "internalConsole",
             "stopAtEntry": false
+        },
+        {
+            "name": "Debug Day7",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/2019/Day7/bin/Debug/netcoreapp3.0/Day7.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/2019/Day7",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Debug IntCode",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/2019/IntCode/bin/Debug/netcoreapp3.1/IntCode.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/2019/IntCode",
+            "console": "internalConsole",
+            "stopAtEntry": false
         }
     ]
 }
