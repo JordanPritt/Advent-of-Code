@@ -9,11 +9,8 @@ namespace Day8
         {
             Console.WriteLine("Application starting...");
 
-            int width = 25;
-            int height = 6;
-
             TxtImg ti = new TxtImg();
-            ti.FormatInput(width, height);
+            ti.FormatInput();
         }
     }
 }

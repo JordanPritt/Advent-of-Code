@@ -2,24 +2,12 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "clean_proj",
+            "label": "clean",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "clean",
-                "${workspaceFolder}/Day2/day2.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "build_proj",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "build",
-                "${workspaceFolder}/Day2/day2.csproj",
+                "${workspaceFolder}/Day8.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -27,10 +15,22 @@
         },
         {
             "label": "build",
-            "dependsOn": [
-                "clean_proj",
-                "build_proj"
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Day8.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
             ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "debug",
+            "dependsOn": [
+                "clean",
+                "build"
+            ]
         },
         {
             "label": "publish",
@@ -38,7 +38,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/Day2/day2.csproj",
+                "${workspaceFolder}/Day8.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -51,7 +51,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/Day2/day2.csproj",
+                "${workspaceFolder}/Day8.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
