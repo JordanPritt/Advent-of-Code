@@ -7,63 +7,86 @@ namespace Day8
 {
     public class TxtImg
     {
-        const int HEIGHT = 2;
-        const int WIDTH = 2;
+        const int HEIGHT = 6;
+        const int WIDTH = 25;
 
         public void FormatInput()
         {
             string input = File.ReadAllText("input.txt");
-            List<List<string>> layers = GetLayers(input);
+            List<int[,]> layers = GetIntLayers(input);
 
             var smallRow = GetLeastZeroes(layers);
             int result = GetOneTimesTwo(smallRow);
 
-            Console.WriteLine($"Smallest Zero 1 X 2: {result}\not");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write("Smallest Zero 1 X 2: ");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write($"{result}\n");
+            Console.ForegroundColor = ConsoleColor.White;
             PrintImage(layers);
         }
 
-        private List<List<string>> GetLayers(string input)
+        private List<int[,]> GetIntLayers(string input)
         {
-            List<List<string>> layers = new List<List<string>>();
+            List<int[,]> layers = new List<int[,]>();
+            int width = 0, height = 0;
+            int[,] currentLayer = new int[WIDTH, HEIGHT];
 
-            for (int i = 0; i < input.Length - WIDTH;)
+            foreach (var c in input)
             {
-                List<string> rows = new List<string>();
-
-                for (int j = 0; j < HEIGHT; j++)
+                if (width >= WIDTH)
                 {
-                    string layer = input.Substring(i, WIDTH);
-                    rows.Add(layer);
-                    i += WIDTH;
+                    width = 0;
+                    height++;
+                    if (height >= HEIGHT)
+                    {
+                        layers.Add(currentLayer);
+                        width = 0;
+                        height = 0;
+                        currentLayer = new int[WIDTH, HEIGHT];
+                    }
                 }
-
-                layers.Add(rows);
+                currentLayer[width++, height] = int.Parse(c.ToString());
             }
 
+            layers.Add(currentLayer);
             return layers;
         }
 
-        private void PrintImage(List<List<string>> layers)
+        private void PrintImage(List<int[,]> layers)
         {
-            List<string> output = new List<string>();
-
-            foreach (List<string> layer in layers)
+            for (int i = 0; i < HEIGHT; i++)
             {
-                string row = "";
-
-                foreach (string str in layer)
+                for (int j = 0; j < WIDTH; j++)
                 {
-
+                    var layer = 0;
+                    while (layers[layer][j, i] == 2)
+                    {
+                        layer++;
+                    }
+                    if (layers[layer][j, i] == 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.Write("**");
+                    }
+                    else if (layers[layer][j, i] == 1)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.Write("||");
+                    }
                 }
+                Console.WriteLine();
             }
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine();
         }
 
-        private List<string> GetLeastZeroes(List<List<string>> input)
+        private int[,] GetLeastZeroes(List<int[,]> input)
         {
-            List<string> smallest = null;
+            int[,] smallest = null;
             int small = -1;
 
-            foreach (List<string> layer in input)
+            foreach (int[,] layer in input)
             {
                 var flattened = String.Join(String.Empty, layer);
                 int zeroes = (from c in flattened where c.ToString() == "0" select c).Count();
@@ -80,7 +103,7 @@ namespace Day8
             return smallest;
         }
 
-        private int GetOneTimesTwo(List<string> layer)
+        private int GetOneTimesTwo(int[,] layer)
         {
             string flattened = String.Join(String.Empty, layer);
             int ones = (from c in flattened where c.ToString() == "1" select c).Count();
