@@ -2,14 +2,16 @@ use std::{
     fs::File,
     io::{prelude::*, BufReader},
     path::Path,
+    time::Instant,
 };
 
 fn main() {
-    println!("Opening file...");
+    let before = Instant::now();
     let location = Path::new("input.txt");
     let nums = load_from_file(location);
 
     calculate_pairs(nums);
+    println!("Elapsed time: {:.2?}", before.elapsed());
 }
 
 fn calculate_pairs(numbers: Vec<i64>) {
