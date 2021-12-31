@@ -34,14 +34,14 @@ let parseInput (input: string) =
 
 let updateState (state: MoveState) (direction: Directions) : MoveState =
     match direction with
-    | Forward units -> { state with horizontal = state.horizontal + units; depth = state.depth * units }
-    | Down units -> { state with aim = state.aim + units; depth = state.depth + units }
-    | Up units -> { state with aim = state.aim - units; depth = state.depth - units }
+    | Forward units -> { state with horizontal = state.horizontal + units; depth = state.depth + state.aim * units }
+    | Down units -> { state with aim = state.aim + units }
+    | Up units -> { state with aim = state.aim - units }
     | Invalid units -> failwith "Invalid state from bad input."
 
 let runPartTwo =
     let state = { horizontal = 0; depth = 0; aim = 0; }
-    let directions = loadTestInput
+    let directions = loadInput
 
     let processDayTwo =
         directions
